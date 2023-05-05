@@ -1,0 +1,14 @@
+syntax = "proto3";
+option csharp_namespace = "NHMonitor.Probe";
+message InterceptData{
+	string sql = 1;
+}
+message RegisterApp{
+	string appName=1;
+}
+message Ack{}
+
+service NHMonitorService{
+	rpc MonitorStream (stream InterceptData) returns (Ack);
+	rpc Register(RegisterApp) returns (Ack);
+}
