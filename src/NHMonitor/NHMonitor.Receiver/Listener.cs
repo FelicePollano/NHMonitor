@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using NHMonitor.Probe;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NHMonitor.Receiver
@@ -9,9 +10,11 @@ namespace NHMonitor.Receiver
     {
         int Port = 6925;
         Server server;
+        int nextAppId = 0;
+        HashSet<string> apps;
         public Listener()
         {
-            
+            apps = new HashSet<string>();
         }
         public void StartServer()
         {
@@ -22,13 +25,24 @@ namespace NHMonitor.Receiver
             };
             server.Start();
         }
-        public void StopServer()
+        public async Task StopServer()
         {
-            server.ShutdownAsync().Wait();
+            await server.KillAsync();
+            await server.ShutdownAsync();
         }
-        public override Task<Ack> Register(RegisterApp request, ServerCallContext context)
+        public override Task<RegisterAck> Register(RegisterApp request, ServerCallContext context)
         {
-            return Task.FromResult(new Ack());
+            lock (this)
+            {
+                if (!apps.Contains(request.AppName))
+                {
+                    return Task.FromResult(new RegisterAck() { AppId = ++nextAppId });
+                }
+                else
+                {
+                    return Task.FromResult(new RegisterAck() { AppId = 0,Message=$"application {request.AppName} already registered" });
+                }
+            }
         }
         public override async Task<Ack> MonitorStream(IAsyncStreamReader<InterceptData> requestStream, ServerCallContext context)
         {

@@ -8,7 +8,12 @@ message RegisterApp{
 }
 message Ack{}
 
+message RegisterAck{
+	int32 appId = 1;
+	string message=2;
+}
+
 service NHMonitorService{
 	rpc MonitorStream (stream InterceptData) returns (Ack);
-	rpc Register(RegisterApp) returns (Ack);
+	rpc Register(RegisterApp) returns (RegisterAck);
 }

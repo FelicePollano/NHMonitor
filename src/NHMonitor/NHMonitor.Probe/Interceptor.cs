@@ -11,6 +11,7 @@ namespace NHMonitor.Probe
     {
         private readonly string appName;
         private readonly Channel channel;
+        public int AppId { get; private set; }
         NHMonitorService.NHMonitorServiceClient client;
         IClientStreamWriter<InterceptData> stream;
         bool haveChannel;
@@ -31,7 +32,8 @@ namespace NHMonitor.Probe
         {
             try
             {
-                await client.RegisterAsync(new RegisterApp() { AppName = appName });
+                RegisterAck ack = await client.RegisterAsync(new RegisterApp() { AppName = appName });
+                AppId = ack.AppId;
                 haveChannel = true;
                 stream = client.MonitorStream(new CallOptions() { }).RequestStream;
             }
@@ -45,14 +47,18 @@ namespace NHMonitor.Probe
             }
                                 
         }
+        public void SendBookmark(string bookmark)
+        {
 
+        }
         public override SqlString OnPrepareStatement(SqlString sql)
         {
-            return base.OnPrepareStatement(sql);
+            var s =  base.OnPrepareStatement(sql);
             if (haveChannel)
             {
                 var _ = stream.WriteAsync(new InterceptData { Sql = null });
             }
+            return s;
         }
     }
 }

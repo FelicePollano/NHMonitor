@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nunit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NHMonitor.Probe\NHMonitor.Probe.csproj" />
     <ProjectReference Include="..\NHMonitor.Receiver\NHMonitor.Receiver.csproj" />
   </ItemGroup>
