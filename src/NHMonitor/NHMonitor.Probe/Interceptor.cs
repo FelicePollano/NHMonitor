@@ -11,7 +11,7 @@ namespace NHMonitor.Probe
     {
         private readonly string appName;
         private readonly Channel channel;
-        public int AppId { get; private set; }
+        int appId;
         NHMonitorService.NHMonitorServiceClient client;
         IClientStreamWriter<InterceptData> stream;
         bool haveChannel;
@@ -33,7 +33,7 @@ namespace NHMonitor.Probe
             try
             {
                 RegisterAck ack = await client.RegisterAsync(new RegisterApp() { AppName = appName });
-                AppId = ack.AppId;
+                appId = ack.AppId;
                 haveChannel = true;
                 stream = client.MonitorStream(new CallOptions() { }).RequestStream;
             }

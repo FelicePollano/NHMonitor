@@ -28,7 +28,6 @@ namespace NHMonitor.Receiver
         public async Task StopServer()
         {
             await server.KillAsync();
-            await server.ShutdownAsync();
         }
         public override Task<RegisterAck> Register(RegisterApp request, ServerCallContext context)
         {
