@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable 8605, 8602,8618
 namespace NHMonitor.Test
 {
     [TestFixture]
@@ -17,7 +18,6 @@ namespace NHMonitor.Test
     {
         Interceptor probe;
         Listener receiver;
-        
 
         [SetUp]
         public void Setup()
