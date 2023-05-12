@@ -34,8 +34,11 @@ namespace NHMonitor.Probe
             {
                 RegisterAck ack = await client.RegisterAsync(new RegisterApp() { AppName = appName });
                 appId = ack.AppId;
-                haveChannel = true;
-                stream = client.MonitorStream(new CallOptions() { }).RequestStream;
+                if (appId != 0)
+                {
+                    haveChannel = true;
+                    stream = client.MonitorStream(new CallOptions() { }).RequestStream;
+                }
             }
             catch(Exception e)
             {

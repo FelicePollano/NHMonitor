@@ -35,6 +35,7 @@ namespace NHMonitor.Receiver
             {
                 if (!apps.Contains(request.AppName))
                 {
+                    apps.Add(request.AppName);
                     return Task.FromResult(new RegisterAck() { AppId = ++nextAppId });
                 }
                 else
@@ -47,7 +48,6 @@ namespace NHMonitor.Receiver
         {
             do
             {
-                Console.WriteLine("received msg");
             } while (await requestStream.MoveNext());
             return new Ack();
         }

@@ -18,7 +18,7 @@ namespace NHMonitor.Test
     {
         Interceptor probe;
         Listener receiver;
-
+        const int syncDelay = 100;
         [SetUp]
         public void Setup()
         {
@@ -30,8 +30,8 @@ namespace NHMonitor.Test
         [Test]
         public async Task registration_should_obtain_an_appID()
         {
-            probe = new Interceptor("test");
-            await Task.Delay(50); //let channel synchronize
+            probe = new Interceptor("1test");
+            await Task.Delay(syncDelay); //let channel synchronize
             /*
              * Not testing the obvious strategy here.
              * This we need to test, but definitely that value must not be part of
@@ -40,6 +40,39 @@ namespace NHMonitor.Test
             int appId = (int)probe.GetType()
                 .GetField("appId", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(probe);
             Assert.NotZero(appId);
+        }
+        [Test]
+        public async Task multiple_registration_should_obtain_different_appID()
+        {
+            int spawnCount = 10;
+            HashSet<int> appIDs = new HashSet<int>();
+            for (int i = 0; i < spawnCount; ++i)
+            {
+                probe = new Interceptor($"2test{i}");
+                await Task.Delay(syncDelay); //let channel synchronize
+                /*
+                 * Not testing the obvious strategy here.
+                 * This we need to test, but definitely that value must not be part of
+                 * the public interface....
+                 */
+                int appId = (int)probe.GetType()
+                    .GetField("appId", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(probe);
+                Assert.NotZero(appId);
+                Assert.False(appIDs.Contains(appId));
+                appIDs.Add(appId);
+            }
+        }
+        [Test]
+        
+        public async Task multiple_registration_with_same_id_should_fail()
+        {
+            var probe = new Interceptor($"3test");
+            await Task.Delay(syncDelay); //let channel synchronize
+            probe = new Interceptor($"3test");
+            await Task.Delay(syncDelay);
+            int appId = (int)probe.GetType()
+                    .GetField("appId", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(probe);
+            Assert.Zero(appId);
         }
 
         [TearDown]
