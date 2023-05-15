@@ -23,7 +23,7 @@ namespace NHMonitor.Test
         public void Setup()
         {
             
-            receiver = new Listener();
+            receiver = new Listener(Listener.NullConsumer);
             receiver.StartServer();
         }
 

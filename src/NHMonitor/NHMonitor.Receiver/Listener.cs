@@ -12,9 +12,12 @@ namespace NHMonitor.Receiver
         Server server;
         int nextAppId = 0;
         HashSet<string> apps;
-        public Listener()
+        readonly IConsumer consumer;
+        public static IConsumer NullConsumer = new NullConsumer();
+        public Listener(IConsumer consumer)
         {
             apps = new HashSet<string>();
+            this.consumer = consumer;
         }
         public void StartServer()
         {
@@ -36,6 +39,7 @@ namespace NHMonitor.Receiver
                 if (!apps.Contains(request.AppName))
                 {
                     apps.Add(request.AppName);
+                    consumer.ApplicationRegistered(request.AppName);
                     return Task.FromResult(new RegisterAck() { AppId = ++nextAppId });
                 }
                 else
