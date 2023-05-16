@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using NHibernate;
 using NHibernate.SqlCommand;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NHMonitor.Probe
@@ -27,7 +28,10 @@ namespace NHMonitor.Probe
                 }
             });
         }
-
+        private long GetTimeStamp()
+        {
+            return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        }
         private async Task EstablishChannel()
         {
             try
@@ -59,7 +63,14 @@ namespace NHMonitor.Probe
             var s =  base.OnPrepareStatement(sql);
             if (haveChannel)
             {
-                var _ = stream.WriteAsync(new InterceptData { Sql = null });
+                var msg = new InterceptData();
+                msg.Type = MessageType.Sql;
+                msg.Payload = sql.ToString();
+                msg.Data.AddRange(
+                    sql.GetParameters().Select(p => new KVpair() { Key=p.ToString(),Value="" })
+                );
+                msg.Timestamp = GetTimeStamp();
+                var _ = stream.WriteAsync(msg);
             }
             return s;
         }

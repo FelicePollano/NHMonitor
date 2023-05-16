@@ -24,6 +24,21 @@ namespace NHMonitor.Test
             var probe = new Interceptor("test");
             await Task.Delay(syncDelay); //let channel synchronize
             consumerMock.Verify(u => u.ApplicationRegistered("test"),Times.Once);
+            await receiver.StopServer();
+        }
+        [Test]
+        public async Task duplicated_registration_does_not_notify()
+        {
+            var consumerMock = new Mock<IConsumer>();
+            Listener receiver = new Listener(consumerMock.Object);
+            receiver.StartServer();
+            var probe = new Interceptor("1test");
+            await Task.Delay(syncDelay); //let channel synchronize
+            consumerMock.Verify(u => u.ApplicationRegistered("1test"), Times.Once);
+            new Interceptor("1test");
+            await Task.Delay(syncDelay); //let channel synchronize
+            consumerMock.Verify(u => u.ApplicationRegistered("1test"), Times.Once);
+            await receiver.StopServer();
         }
     }
 }

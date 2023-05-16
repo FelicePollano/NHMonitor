@@ -52,6 +52,11 @@ namespace NHMonitor.Receiver
         {
             do
             {
+                var msg = requestStream.Current;
+                switch (msg.Type)
+                {
+                    
+                }
             } while (await requestStream.MoveNext());
             return new Ack();
         }
