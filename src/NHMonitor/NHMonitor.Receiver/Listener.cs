@@ -2,6 +2,7 @@
 using NHMonitor.Probe;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NHMonitor.Receiver
@@ -50,15 +51,27 @@ namespace NHMonitor.Receiver
         }
         public override async Task<Ack> MonitorStream(IAsyncStreamReader<InterceptData> requestStream, ServerCallContext context)
         {
-            do
+            while (await requestStream.MoveNext())
             {
                 var msg = requestStream.Current;
                 switch (msg.Type)
                 {
-                    
+                    case MessageType.Sql:
+                        HandleSQL(msg);
+                        break;
                 }
-            } while (await requestStream.MoveNext());
+            } ;
             return new Ack();
+        }
+
+        private void HandleSQL(InterceptData msg)
+        {
+            consumer.Query(FromUnixTimeStamp(msg.Timestamp), msg.Payload, 
+                                            msg.Data.ToList().Select(u=>new KeyValuePair<string, string>(u.Key,u.Value)));
+        }
+        private DateTime FromUnixTimeStamp(long unixTimeStamp) 
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeStamp).LocalDateTime;
         }
     }
 }

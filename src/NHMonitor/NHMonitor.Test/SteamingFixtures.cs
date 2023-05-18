@@ -35,7 +35,8 @@ namespace NHMonitor.Test
             sql.Append(new SqlString(Parameter.WithIndex(1)));
             probe.OnPrepareStatement(sql);
             await Task.Delay(commDelay);
-            consumerMock.Verify(k => k.Query(It.IsAny<DateTime>(), "select * from somewhere", It.IsAny<IEnumerable<KeyValuePair<string, string>>>()),Times.Once);
+            consumerMock.Verify(k => k.Query(It.IsAny<DateTime>(), "select * from somewhere", 
+                It.IsAny<IEnumerable<KeyValuePair<string, string>>>()),Times.Once);
 
         }
 
