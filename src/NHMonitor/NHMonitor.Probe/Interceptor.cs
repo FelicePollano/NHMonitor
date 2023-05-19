@@ -1,5 +1,9 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 using NHibernate;
 using NHibernate.SqlCommand;
 using System;
@@ -8,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NHMonitor.Probe
 {
-    public class Interceptor:EmptyInterceptor
+    public class Interceptor:EmptyInterceptor,IAppender
     {
         private readonly string appName;
         private readonly Channel channel;
@@ -16,8 +20,12 @@ namespace NHMonitor.Probe
         NHMonitorService.NHMonitorServiceClient client;
         IClientStreamWriter<InterceptData> stream;
         bool haveChannel;
+
+        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public Interceptor(string appName)
         {
+            BasicConfigurator.Configure(this);
             this.appName = appName;
             channel = new Channel("localhost:6925", ChannelCredentials.Insecure);
             client = new NHMonitorService.NHMonitorServiceClient(channel);
@@ -73,6 +81,19 @@ namespace NHMonitor.Probe
                 var _ = stream.WriteAsync(msg);
             }
             return s;
+        }
+
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DoAppend(LoggingEvent loggingEvent)
+        {
+            if (loggingEvent.LoggerName == "NHibernate.SQL")
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

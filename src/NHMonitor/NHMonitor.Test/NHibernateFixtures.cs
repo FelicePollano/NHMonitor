@@ -52,7 +52,7 @@ namespace NHMonitor.Test
             Listener receiver = new Listener(consumerMock.Object);
             receiver.StartServer();
             await Task.Delay(syncDelay); 
-            var all = session.Query<MyEntity>().ToList();
+            var all = session.Query<MyEntity>().Where(u=>u.Integer>0).ToList();
             consumerMock.Verify(k => k.Query(It.IsAny<DateTime>(), It.IsRegex(".*select.*"),
                It.IsAny<IEnumerable<KeyValuePair<string, string>>>()), Times.Once);
             await receiver.StopServer();
