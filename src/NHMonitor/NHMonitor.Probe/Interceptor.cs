@@ -66,33 +66,18 @@ namespace NHMonitor.Probe
         {
 
         }
-        public override SqlString OnPrepareStatement(SqlString sql)
-        {
-            var s =  base.OnPrepareStatement(sql);
-            if (haveChannel)
-            {
-                var msg = new InterceptData();
-                msg.Type = MessageType.Sql;
-                msg.Payload = sql.ToString();
-                msg.Data.AddRange(
-                    sql.GetParameters().Select(p => new KVpair() { Key=p.ToString(),Value="" })
-                );
-                msg.Timestamp = GetTimeStamp();
-                var _ = stream.WriteAsync(msg);
-            }
-            return s;
-        }
-
         public void Close()
         {
-            throw new NotImplementedException();
         }
-
         public void DoAppend(LoggingEvent loggingEvent)
         {
             if (loggingEvent.LoggerName == "NHibernate.SQL")
             {
-                throw new NotImplementedException();
+                var msg = new InterceptData();
+                msg.Type = MessageType.Sql;
+                msg.Payload = loggingEvent.RenderedMessage;
+                msg.Timestamp = GetTimeStamp();
+                var _ = stream.WriteAsync(msg);
             }
         }
     }

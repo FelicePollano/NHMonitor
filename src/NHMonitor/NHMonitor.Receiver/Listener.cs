@@ -66,8 +66,7 @@ namespace NHMonitor.Receiver
 
         private void HandleSQL(InterceptData msg)
         {
-            consumer.Query(FromUnixTimeStamp(msg.Timestamp), msg.Payload, 
-                                            msg.Data.ToList().Select(u=>new KeyValuePair<string, string>(u.Key,u.Value)));
+            consumer.Query(FromUnixTimeStamp(msg.Timestamp), msg.Payload);
         }
         private DateTime FromUnixTimeStamp(long unixTimeStamp) 
         {

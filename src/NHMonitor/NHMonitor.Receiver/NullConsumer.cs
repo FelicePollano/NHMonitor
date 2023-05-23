@@ -15,7 +15,7 @@ namespace NHMonitor.Receiver
             
         }
 
-        public void Query(DateTime dt, string sql, IEnumerable<KeyValuePair<string, string>> parameters)
+        public void Query(DateTime dt, string sql)
         {
             
         }
