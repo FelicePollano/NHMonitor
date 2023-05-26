@@ -2,7 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Allow NH calls interceptions via NHMonitor</Title>
+    <Description>Allow NH calls interceptions via NHMonitor</Description>
+    <PackageProjectUrl>https://github.com/FelicePollano/NHMonitor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FelicePollano/NHMonitor</RepositoryUrl>
+    <PackageTags>NHibernate, Monitor, developer, tool</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.22.3" />
@@ -18,4 +32,8 @@
 	<ItemGroup>
 		<Protobuf Include="nhmonitor.proto" GrpcServices="Client" />
 	</ItemGroup>
+  <PropertyGroup>
+  <VersionPrefix>1.0.1</VersionPrefix>
+  <VersionSuffix>alpha</VersionSuffix>
+</PropertyGroup>
 </Project>

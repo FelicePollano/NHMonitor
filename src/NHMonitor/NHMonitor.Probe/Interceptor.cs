@@ -71,7 +71,7 @@ namespace NHMonitor.Probe
         }
         public void DoAppend(LoggingEvent loggingEvent)
         {
-            if (loggingEvent.LoggerName == "NHibernate.SQL")
+            if (haveChannel && loggingEvent.LoggerName == "NHibernate.SQL")
             {
                 var msg = new InterceptData();
                 msg.Type = MessageType.Sql;

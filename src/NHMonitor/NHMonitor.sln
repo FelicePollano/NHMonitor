@@ -5,9 +5,11 @@ VisualStudioVersion = 17.5.33312.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHMonitor.Probe", "NHMonitor.Probe\NHMonitor.Probe.csproj", "{3746F7F7-A5D6-4A57-B09A-1CCD2EAA360F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHMonitor.Test", "NHMonitor.Test\NHMonitor.Test.csproj", "{AC11336B-A71D-463D-9467-9E3F0D66D8CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHMonitor.Test", "NHMonitor.Test\NHMonitor.Test.csproj", "{AC11336B-A71D-463D-9467-9E3F0D66D8CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHMonitor.Receiver", "NHMonitor.Receiver\NHMonitor.Receiver.csproj", "{46BE0BB9-5457-4E19-B35B-B42FF57E4AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHMonitor.Receiver", "NHMonitor.Receiver\NHMonitor.Receiver.csproj", "{46BE0BB9-5457-4E19-B35B-B42FF57E4AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHMonitor", "NHMonitor\NHMonitor.csproj", "{475A73DE-D468-4C92-9702-A48F7C75C267}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{46BE0BB9-5457-4E19-B35B-B42FF57E4AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46BE0BB9-5457-4E19-B35B-B42FF57E4AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BE0BB9-5457-4E19-B35B-B42FF57E4AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{475A73DE-D468-4C92-9702-A48F7C75C267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{475A73DE-D468-4C92-9702-A48F7C75C267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{475A73DE-D468-4C92-9702-A48F7C75C267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{475A73DE-D468-4C92-9702-A48F7C75C267}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
