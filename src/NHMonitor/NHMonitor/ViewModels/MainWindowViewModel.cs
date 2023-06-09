@@ -14,13 +14,24 @@ namespace NHMonitor.ViewModels
 {
     internal class MainWindowViewModel:Screen,IConsumer
     {
-        ObservableCollection<EventModel> events = new ObservableCollection<EventModel>();
-        ObservableCollection<string> applications = new ObservableCollection<string>();
+        readonly ObservableCollection<EventModel> events = new ObservableCollection<EventModel>();
+        readonly ObservableCollection<string> applications = new ObservableCollection<string>();
+        readonly Listener listener;
+
+        public IEnumerable<EventModel> Events => events;
+        public MainWindowViewModel()
+        {
+            listener = new Listener(this);
+        }
         public void ApplicationRegistered(string appName)
         {
             applications.Add(appName);
         }
-
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            await listener.StopServer();
+            await base.OnDeactivateAsync(close, cancellationToken);
+        }
         public void Query(DateTime dt, string sql)
         {
             events.Add(new EventModel(EventModel.Kind.sql) { Time = dt, Payload = sql });
@@ -28,7 +39,7 @@ namespace NHMonitor.ViewModels
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            Listener listener = new Listener(this);
+            listener.StartServer();
             return base.OnActivateAsync(cancellationToken);
         }
     }
