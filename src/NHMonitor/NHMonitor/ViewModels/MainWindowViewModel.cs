@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
+using NHMonitor.MockData;
 using NHMonitor.Models;
 using NHMonitor.Receiver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,13 @@ namespace NHMonitor.ViewModels
         public MainWindowViewModel()
         {
             listener = new Listener(this);
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                foreach(var k in MockdataGen.GenerateRandomSqls(1000))
+                {
+                    events.Add(k);
+                }
+            }
         }
         public void ApplicationRegistered(string appName)
         {

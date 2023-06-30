@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:NHMonitor"
-        mc:Ignorable="d"
+		xmlns:cal="http://www.caliburnproject.org"
+	mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,10 +20,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="16"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Row="1"
+        <ItemsControl x:Name="mainList"  Grid.Row="1"
                   Grid.Column="1"
                   ItemsSource="{Binding Events}">
-            
-        </ListView>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<ContentControl cal:View.Model="{Binding}"></ContentControl>
+				</DataTemplate>	
+			</ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </mah:MetroWindow>
