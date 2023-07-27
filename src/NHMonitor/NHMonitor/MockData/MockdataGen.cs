@@ -1,4 +1,4 @@
-﻿using NHMonitor.Models;
+﻿using NHMonitor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace NHMonitor.MockData
 {
     public static class MockdataGen
     {
-        static public IEnumerable<EventModel> GenerateRandomSqls(int count)
+        static public IEnumerable<EventViewModel> GenerateRandomSqls(int count)
         {
             for (int i = 0; i < count; i++)
             {
-                yield return new EventModel(EventModel.Kind.sql) { Time = DateTime.Now, Payload = "SELECT * FROM ANYTHING" };
+                yield return new EventViewModel(EventViewModel.Kind.sql) { Time = DateTime.Now, Payload = "SELECT * FROM ANYTHING" };
             }
         }
     }

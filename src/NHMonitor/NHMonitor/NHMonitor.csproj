@@ -16,4 +16,8 @@
     <ProjectReference Include="..\NHMonitor.Receiver\NHMonitor.Receiver.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

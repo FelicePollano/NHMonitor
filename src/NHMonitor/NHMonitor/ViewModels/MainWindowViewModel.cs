@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using NHMonitor.MockData;
-using NHMonitor.Models;
 using NHMonitor.Receiver;
 using System;
 using System.Collections.Generic;
@@ -16,17 +15,17 @@ namespace NHMonitor.ViewModels
 {
     internal class MainWindowViewModel:Screen,IConsumer
     {
-        readonly ObservableCollection<EventModel> events = new ObservableCollection<EventModel>();
+        readonly ObservableCollection<EventViewModel> events = new ObservableCollection<EventViewModel>();
         readonly ObservableCollection<string> applications = new ObservableCollection<string>();
         readonly Listener listener;
 
-        public IEnumerable<EventModel> Events => events;
+        public IEnumerable<EventViewModel> Events => events;
         public MainWindowViewModel()
         {
             listener = new Listener(this);
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
-                foreach(var k in MockdataGen.GenerateRandomSqls(1000))
+                foreach(var k in MockdataGen.GenerateRandomSqls(100))
                 {
                     events.Add(k);
                 }
@@ -43,7 +42,7 @@ namespace NHMonitor.ViewModels
         }
         public void Query(DateTime dt, string sql)
         {
-            events.Add(new EventModel(EventModel.Kind.sql) { Time = dt, Payload = sql });
+            events.Add(new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql });
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)

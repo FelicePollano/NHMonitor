@@ -20,14 +20,15 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="16"/>
         </Grid.ColumnDefinitions>
-        <ItemsControl x:Name="mainList"  Grid.Row="1"
-                  Grid.Column="1"
-                  ItemsSource="{Binding Events}">
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<ContentControl cal:View.Model="{Binding}"></ContentControl>
-				</DataTemplate>	
-			</ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Grid>
+		<ScrollViewer Grid.Row="1" Grid.Column="1">
+			<ItemsControl x:Name="mainList" 
+                              ItemsSource="{Binding Events}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ContentControl cal:View.Model="{Binding}"></ContentControl>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
 </mah:MetroWindow>
