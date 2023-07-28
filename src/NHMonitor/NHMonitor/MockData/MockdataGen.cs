@@ -13,7 +13,14 @@ namespace NHMonitor.MockData
         {
             for (int i = 0; i < count; i++)
             {
-                yield return new EventViewModel(EventViewModel.Kind.sql) { Time = DateTime.Now, Payload = "SELECT * FROM ANYTHING" };
+                //https://stackoverflow.com/questions/4255398/wpf-avalonedit-sql-xhsd-request
+                yield return new EventViewModel(EventViewModel.Kind.sql) { Time = DateTime.Now, Payload = @"SELECT * FROM ANYTHING
+INNER JOIN OTHER ON OTHER.X=ANYTHING.Y
+WHERE D>1000
+AND Q>0
+GROUP BY SN
+ORDER BY BLA
+" };
             }
         }
     }

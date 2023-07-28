@@ -9,17 +9,19 @@
 			 xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
 		
-		<Expander IsExpanded="True">
-			<Expander.Header>
-				<mah:MetroHeader >
+				<mah:MetroHeader Grid.Row="0" >
 					<Border Background="LightGray">
 						<TextBlock Text="{Binding Title}"/>
 					</Border>
 				</mah:MetroHeader>
-			</Expander.Header>
 			
-			<ContentControl cal:View.Model="{Binding EventModel}"/>
-		</Expander>   
+			
+			<ContentControl Grid.Row="1" cal:View.Model="{Binding EventModel}"/>
+		   
     </Grid>
 </UserControl>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NHMonitor.ViewModels
 {
@@ -19,7 +20,7 @@ namespace NHMonitor.ViewModels
         readonly ObservableCollection<string> applications = new ObservableCollection<string>();
         readonly Listener listener;
 
-        public IEnumerable<EventViewModel> Events => events;
+        public ObservableCollection<EventViewModel> Events => events;
         public MainWindowViewModel()
         {
             listener = new Listener(this);
@@ -42,7 +43,9 @@ namespace NHMonitor.ViewModels
         }
         public void Query(DateTime dt, string sql)
         {
-            events.Add(new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql });
+            Application.Current.Dispatcher.Invoke(
+                () => events.Add(new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql })
+                );
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
