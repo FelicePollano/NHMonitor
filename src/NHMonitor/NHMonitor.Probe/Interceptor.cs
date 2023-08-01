@@ -5,6 +5,7 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using NHibernate;
+using NHibernate.Hql.Ast.ANTLR.Util;
 using NHibernate.SqlCommand;
 using System;
 using System.Linq;
@@ -25,7 +26,11 @@ namespace NHMonitor.Probe
 
         public Interceptor(string appName)
         {
-            BasicConfigurator.Configure(this);
+            var hierarchy = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
+            hierarchy.Root.AddAppender(this);
+            var sql = LogManager.GetLogger("NHibernate.SQL");
+            ((log4net.Repository.Hierarchy.Logger)sql.Logger).Level = Level.All;
+
             this.appName = appName;
             channel = new Channel("localhost:6925", ChannelCredentials.Insecure);
             client = new NHMonitorService.NHMonitorServiceClient(channel);
@@ -38,7 +43,7 @@ namespace NHMonitor.Probe
         }
         private long GetTimeStamp()
         {
-            return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
         private async Task EstablishChannel()
         {

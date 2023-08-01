@@ -19,11 +19,12 @@ namespace NHMonitor.ViewModels
         readonly ObservableCollection<EventViewModel> events = new ObservableCollection<EventViewModel>();
         readonly ObservableCollection<string> applications = new ObservableCollection<string>();
         readonly Listener listener;
-
+        int maxEvents = 500;
         public ObservableCollection<EventViewModel> Events => events;
         public MainWindowViewModel()
         {
             listener = new Listener(this);
+           
             if (Debugger.IsAttached)
             {
                 foreach(var k in MockdataGen.GenerateRandomSqls(100))
@@ -44,7 +45,18 @@ namespace NHMonitor.ViewModels
         public void Query(DateTime dt, string sql)
         {
             Application.Current.Dispatcher.Invoke(
-                () => events.Add(new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql })
+                () => {
+                    var @event = new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql };
+                    if (events.Count > 0)
+                    {
+                        @event.Delta =(int) (dt - events[0].Time).TotalMilliseconds;
+                    }
+                    events.Insert(0, @event);
+                    if(events.Count > maxEvents)
+                    {
+                        events.RemoveAt(events.Count - 1);
+                    }
+                }
                 );
         }
 

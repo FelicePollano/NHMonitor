@@ -33,7 +33,7 @@
 		<Protobuf Include="nhmonitor.proto" GrpcServices="Client" />
 	</ItemGroup>
   <PropertyGroup>
-  <VersionPrefix>1.0.1</VersionPrefix>
+  <VersionPrefix>1.0.3</VersionPrefix>
   <VersionSuffix>alpha</VersionSuffix>
 </PropertyGroup>
 </Project>

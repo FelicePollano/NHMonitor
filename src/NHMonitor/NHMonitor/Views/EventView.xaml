@@ -15,8 +15,11 @@
 		</Grid.RowDefinitions>
 		
 				<mah:MetroHeader Grid.Row="0" >
-					<Border Background="LightGray">
-						<TextBlock Text="{Binding Title}"/>
+					<Border Background="LightGray" Margin="2,2,2,2" BorderThickness="1" BorderBrush="DarkGray">
+						<StackPanel Orientation="Horizontal">
+					<TextBlock Margin="0,0,10,0" Text="{Binding DeltaString}"/>
+					<TextBlock Text="{Binding Title}"/>
+						</StackPanel>
 					</Border>
 				</mah:MetroHeader>
 			

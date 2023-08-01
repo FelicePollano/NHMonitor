@@ -16,6 +16,10 @@ namespace NHMonitor.ViewModels
         {
             sql
         }
+        // we should not do back in time :) but bugs exists so
+
+        public string DeltaString => string.Format("{0:+0000} ms", Delta);
+        public int Delta { get; set; }
         public DateTime Time { get; set; }
         public string Payload { get; set; }
         public Kind Type { get; private set; }
