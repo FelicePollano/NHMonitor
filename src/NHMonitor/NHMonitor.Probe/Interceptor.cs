@@ -29,6 +29,7 @@ namespace NHMonitor.Probe
             var hierarchy = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
             hierarchy.Root.AddAppender(this);
             var sql = LogManager.GetLogger("NHibernate.SQL");
+            BasicConfigurator.Configure(this);
             ((log4net.Repository.Hierarchy.Logger)sql.Logger).Level = Level.All;
 
             this.appName = appName;

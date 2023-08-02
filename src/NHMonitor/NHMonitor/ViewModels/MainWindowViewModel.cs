@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace NHMonitor.ViewModels
     {
         readonly ObservableCollection<EventViewModel> events = new ObservableCollection<EventViewModel>();
         readonly ObservableCollection<string> applications = new ObservableCollection<string>();
+        readonly BasicFormatter formatter = new BasicFormatter();
         readonly Listener listener;
         int maxEvents = 500;
         public EasyCommand ClearCommand { get; private set; }
@@ -52,6 +54,7 @@ namespace NHMonitor.ViewModels
         public void ApplicationRegistered(string appName)
         {
             applications.Add(appName);
+            AppCount++;
         }
         protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
@@ -62,7 +65,7 @@ namespace NHMonitor.ViewModels
         {
             Application.Current.Dispatcher.Invoke(
                 () => {
-                    var @event = new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = sql };
+                    var @event = new EventViewModel(EventViewModel.Kind.sql) { Time = dt, Payload = formatter.Format(sql) };
                     if (events.Count > 0)
                     {
                         @event.Delta =(int) (dt - events[0].Time).TotalMilliseconds;
@@ -72,6 +75,7 @@ namespace NHMonitor.ViewModels
                     {
                         events.RemoveAt(events.Count - 1);
                     }
+                    ClearCommand.RaiseCanExecuteChanged();
                 }
                 );
         }
