@@ -1,13 +1,36 @@
 ﻿<mah:MetroWindow x:Class="NHMonitor.Views.MainWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:NHMonitor"
 		xmlns:cal="http://www.caliburnproject.org"
 	mc:Ignorable="d"
-        Title="NHMonitor" Height="450" Width="800">
+        Title="NHMonitor" Name="mainwindow" Height="450" Width="800">
+	<mah:MetroWindow.Resources>
+		<Style TargetType="Label">
+			<Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.Badged.Foreground}"/>
+			<Setter Property="Margin" Value="0,2,0,0"/>
+
+		</Style>
+	</mah:MetroWindow.Resources>
+	<mah:MetroWindow.LeftWindowCommands>
+		<mah:WindowCommands>
+			<iconPacks:PackIconSimpleIcons Kind="Hibernate" Margin="2,8,2,0" />
+			<StackPanel Orientation="Horizontal">
+				<Label Content="{Binding AppCount}"></Label>
+				<Label> Apps connected</Label></StackPanel>
+		</mah:WindowCommands>
+	</mah:MetroWindow.LeftWindowCommands>
+	<mah:MetroWindow.RightWindowCommands>
+		<mah:WindowCommands>
+			<Button Command="{Binding ClearCommand}"  ToolTip="Clear all">
+				<iconPacks:PackIconMaterialDesign Kind="ClearAll" />
+			</Button>
+		</mah:WindowCommands>
+	</mah:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="16"></RowDefinition>

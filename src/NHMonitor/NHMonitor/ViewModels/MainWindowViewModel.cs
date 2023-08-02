@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using NHMonitor.Helpers;
 using NHMonitor.MockData;
 using NHMonitor.Receiver;
 using System;
@@ -20,11 +21,17 @@ namespace NHMonitor.ViewModels
         readonly ObservableCollection<string> applications = new ObservableCollection<string>();
         readonly Listener listener;
         int maxEvents = 500;
+        public EasyCommand ClearCommand { get; private set; }
         public ObservableCollection<EventViewModel> Events => events;
         public MainWindowViewModel()
         {
             listener = new Listener(this);
-           
+            ClearCommand = new EasyCommand( (m) =>
+                                        {
+                                            events.Clear();
+                                            ClearCommand.RaiseCanExecuteChanged();
+                                        }
+                                        ,(m) => events.Count > 0 );
             if (Debugger.IsAttached)
             {
                 foreach(var k in MockdataGen.GenerateRandomSqls(100))
@@ -32,7 +39,16 @@ namespace NHMonitor.ViewModels
                     events.Add(k);
                 }
             }
+            
         }
+        private int appCount;
+
+        public int AppCount
+        {
+            get { return appCount; }
+            set { appCount = value; NotifyOfPropertyChange(nameof(AppCount)); }
+        }
+        
         public void ApplicationRegistered(string appName)
         {
             applications.Add(appName);
