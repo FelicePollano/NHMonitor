@@ -85,5 +85,16 @@ namespace NHMonitor.ViewModels
             listener.StartServer();
             return base.OnActivateAsync(cancellationToken);
         }
+
+        public void ApplicationUnregistered(string appName)
+        {
+            applications.Remove(appName);
+            AppCount--;
+        }
+
+        public void Bookmark(DateTime dt, string text)
+        {
+            
+        }
     }
 }

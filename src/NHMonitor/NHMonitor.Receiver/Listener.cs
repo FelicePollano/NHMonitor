@@ -49,6 +49,22 @@ namespace NHMonitor.Receiver
                 }
             }
         }
+        public override Task<RegisterAck> Unregister(RegisterApp request, ServerCallContext context)
+        {
+            lock (this)
+            {
+                if (apps.Contains(request.AppName))
+                {
+                    apps.Remove(request.AppName);
+                    consumer.ApplicationUnregistered(request.AppName);
+                    return Task.FromResult(new RegisterAck() { AppId = -1 });
+                }
+                else
+                {
+                    return Task.FromResult(new RegisterAck() { AppId = 0, Message = $"application {request.AppName} does not exist" });
+                }
+            }
+        }
         public override async Task<Ack> MonitorStream(IAsyncStreamReader<InterceptData> requestStream, ServerCallContext context)
         {
             while (await requestStream.MoveNext())
@@ -59,6 +75,9 @@ namespace NHMonitor.Receiver
                     case MessageType.Sql:
                         HandleSQL(msg);
                         break;
+                    case MessageType.Bookmark:
+                        HandleBookmark(msg);
+                        break;
                 }
             } ;
             return new Ack();
@@ -67,6 +86,10 @@ namespace NHMonitor.Receiver
         private void HandleSQL(InterceptData msg)
         {
             consumer.Query(FromUnixTimeStamp(msg.Timestamp), msg.Payload);
+        }
+        private void HandleBookmark(InterceptData msg)
+        {
+            consumer.Bookmark(FromUnixTimeStamp(msg.Timestamp), msg.Payload);
         }
         private DateTime FromUnixTimeStamp(long unixTimeStamp) 
         {

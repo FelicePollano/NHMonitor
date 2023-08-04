@@ -15,6 +15,16 @@ namespace NHMonitor.Receiver
             
         }
 
+        public void ApplicationUnregistered(string appName)
+        {
+            
+        }
+
+        public void Bookmark(DateTime dt, string text)
+        {
+            
+        }
+
         public void Query(DateTime dt, string sql)
         {
             

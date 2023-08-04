@@ -24,11 +24,12 @@ namespace NHMonitor.Test
     {
         int syncDelay = 100;
         ISession session;
+        Interceptor interceptor;
         [SetUp]
         public void SetUp() 
         {
             var cfg = new Configuration();
-            cfg.Interceptor = new Interceptor("NH");
+            interceptor = new Interceptor("NH");
             cfg.DataBaseIntegration(d =>
             {
                 d.Dialect<SQLiteDialect>();

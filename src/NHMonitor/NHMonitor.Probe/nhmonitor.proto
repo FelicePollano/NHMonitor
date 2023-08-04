@@ -3,6 +3,7 @@ option csharp_namespace = "NHMonitor.Probe";
 
 enum MessageType{
 	Sql=0;
+	Bookmark=1;
 }
 
 message KVpair{
@@ -29,4 +30,5 @@ message RegisterAck{
 service NHMonitorService{
 	rpc MonitorStream (stream InterceptData) returns (Ack);
 	rpc Register(RegisterApp) returns (RegisterAck);
+	rpc Unregister(RegisterApp) returns (RegisterAck);
 }

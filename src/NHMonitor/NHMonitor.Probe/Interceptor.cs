@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace NHMonitor.Probe
 {
-    public class Interceptor:EmptyInterceptor,IAppender
+    public class Interceptor:IAppender,IDisposable
     {
         private readonly string appName;
         private readonly Channel channel;
@@ -70,20 +70,37 @@ namespace NHMonitor.Probe
         }
         public void SendBookmark(string bookmark)
         {
-
+            var msg = new InterceptData();
+            msg.Type = MessageType.Bookmark;
+            msg.Payload = bookmark;
+            msg.Timestamp = GetTimeStamp();
+            var _ = stream.WriteAsync(msg);
         }
+        
         public void Close()
         {
         }
         public void DoAppend(LoggingEvent loggingEvent)
         {
-            if (haveChannel && loggingEvent.LoggerName == "NHibernate.SQL")
+            lock (this)
             {
-                var msg = new InterceptData();
-                msg.Type = MessageType.Sql;
-                msg.Payload = loggingEvent.RenderedMessage;
-                msg.Timestamp = GetTimeStamp();
-                var _ = stream.WriteAsync(msg);
+                if (haveChannel && loggingEvent.LoggerName == "NHibernate.SQL")
+                {
+                    var msg = new InterceptData();
+                    msg.Type = MessageType.Sql;
+                    msg.Payload = loggingEvent.RenderedMessage;
+                    msg.Timestamp = GetTimeStamp();
+                    var _ = stream.WriteAsync(msg);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (haveChannel)
+            {
+                
+                channel.ShutdownAsync();
             }
         }
     }
