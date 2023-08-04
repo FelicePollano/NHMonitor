@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-		<ava:TextEditor IsEnabled="False" x:Name="Editor" SyntaxHighlighting="sql" ShowLineNumbers="True" Height="Auto" IsReadOnly="True"
+		<ava:TextEditor IsEnabled="True" x:Name="Editor" SyntaxHighlighting="sql" ShowLineNumbers="True" Height="Auto" IsReadOnly="True"
 						FontFamily="Consolas" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto"
                 FontSize="10pt">
 			<bvh:Interaction.Behaviors>

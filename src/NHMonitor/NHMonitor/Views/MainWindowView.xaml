@@ -5,7 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:bvh="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:NHMonitor"
+        xmlns:b="clr-namespace:NHMonitor.Behaviors"
 		xmlns:cal="http://www.caliburnproject.org"
 	mc:Ignorable="d"
         Title="NHMonitor" Name="mainwindow" Height="450" Width="800">
@@ -44,6 +46,9 @@
             <ColumnDefinition Width="16"/>
         </Grid.ColumnDefinitions>
 		<ScrollViewer Grid.Row="1" Grid.Column="1">
+            <bvh:Interaction.Behaviors>
+                <b:UseMouseWheel/>
+            </bvh:Interaction.Behaviors>
 			<ItemsControl x:Name="mainList" 
                               ItemsSource="{Binding Events}">
 				<ItemsControl.ItemTemplate>
